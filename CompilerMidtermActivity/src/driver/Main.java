@@ -39,20 +39,23 @@ public class Main
 		}
 		
 		// TODO: check if tokenizedInput passed lexical analysis, if yes proceed, else skip
-		// check tokenizedInputs' syntax 
-		// TODO: set the hasPassedSyntaxAnalysis value of tokenizedInput
+		// check tokenizedInputs' syntax, sets the setPassedChecker()
 		// print result
 		System.out.println("\nRegex & Parenthesis Checker:");
-		
-		for ( String s : input )
+		for(int i = 0; i < tokenizedInputs.size(); i++)
 		{
-			if(Checker.regexChecker(s))
+			// Using tokenizedInputs: where you use regexChecker by passing tokenizedInputs.get(i).getInfixTokens()
+			// Using original inputs: where you use parenthesisChecker by passing input.get(i)
+			
+			if( Checker.parenthesisChecker(input.get(i)) && Checker.regexChecker(tokenizedInputs.get(i).getInfixTokens()) )
 			{
-				System.out.println(s + " - MATCHED");
+				tokenizedInputs.get(i).setPassedChecker(true);
+				System.out.println(input.get(i) + " - ACCEPTED");
 			}
 			else
 			{
-				System.out.println(s + " - NOT MATCHED");
+				tokenizedInputs.get(i).setPassedChecker(false);
+				System.out.println(input.get(i) + " - SYNTAX ERROR");
 			}
 		}
                 
