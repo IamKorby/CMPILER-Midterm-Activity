@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import controller.FileReader;
 import controller.Lexer;
-import model.TokenList;
+import controller.Checker;
 import model.TokenNode;
 
 public class Main
@@ -12,6 +12,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		FileReader filereader = new FileReader();
+		Checker regexCheck = new Checker();
 		
 		ArrayList<String> input = filereader.read("src/input.txt");
 		
@@ -26,9 +27,23 @@ public class Main
 		
 		ArrayList<TokenNode> parsedInput = lexer.parseInput(input.get(4));
 		
-		for ( TokenNode t : parsedInput )
+		for ( TokenNode n : parsedInput )
 		{
-			System.out.println(t.getToken() + "\t" + t.getTokenType());
+			System.out.println(n.getToken() + "\t" + n.getTokenType());
+		}
+		
+		System.out.println("\nRegex & Parenthesis Checker:");
+		
+		for ( String s : input )
+		{
+			if(regexCheck.regexChecker(s))
+			{
+				System.out.println(s + " - MATCHED");
+			}
+			else
+			{
+				System.out.println(s + " - NOT MATCHED");
+			}
 		}
 		
 //		System.out.println("TRIAL");
@@ -38,7 +53,7 @@ public class Main
 //		String x = "+";
 //		
 //		System.out.println(TokenList.containsSymbol(x));
-//		System.out.println(-2*+3);
+//		System.out.println(-2*-3);
 	}
 }
 
