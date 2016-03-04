@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import controller.FileReader;
 import controller.Lexer;
-import controller.Regex;
+import controller.Checker;
 import model.TokenNode;
 
 public class Main
@@ -12,7 +12,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		FileReader filereader = new FileReader();
-		Regex regexCheck = new Regex();
+		Checker regexCheck = new Checker();
 		
 		ArrayList<String> input = filereader.read("src/input.txt");
 		

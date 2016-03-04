@@ -3,7 +3,7 @@ package controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Regex {
+public class Checker {
 	
 	public boolean regexChecker(String input)
 	{
