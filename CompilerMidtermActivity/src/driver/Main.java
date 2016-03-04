@@ -32,7 +32,7 @@ public class Main
 			System.out.println(n.getToken() + "\t" + n.getTokenType());
 		}
 		
-		System.out.println("\nRegexChecker:");
+		System.out.println("\nRegex & Parenthesis Checker:");
 		
 		for ( String s : input )
 		{
