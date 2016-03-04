@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controller.FileReader;
 import controller.Lexer;
 import controller.Checker;
+import controller.PrecedenceParser;
 import model.TokenNode;
 
 public class Main
@@ -45,6 +46,9 @@ public class Main
 				System.out.println(s + " - NOT MATCHED");
 			}
 		}
+                
+                System.out.println("\nConvert to postfix");
+                PrecedenceParser.Convert2PostFix(parsedInput);
 		
 //		System.out.println("TRIAL");
 //		System.out.println(TokenList.containsNumber(Integer.toString(3)));
