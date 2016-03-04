@@ -18,7 +18,7 @@ public class PrecedenceParser
 {
 	public static ArrayList<TokenNode> Convert2PostFix(ArrayList<TokenNode> list)
 	{
-		ArrayList<TokenNode> postFix = new ArrayList<TokenNode>();
+		ArrayList<TokenNode> postFix = new ArrayList<>();
 		Stack<TokenNode> stack = new Stack<>();
 		TokenNode currentToken;
 		TokenNode stackTop;
