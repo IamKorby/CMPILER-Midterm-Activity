@@ -87,7 +87,7 @@ public class PrecedenceParser {
     static int assignICP(TokenNode token){
         int ICP = 0;
         String tokenSymbol = token.getToken();
-        if("*".equals(tokenSymbol) || "/".equals(tokenSymbol)){
+        if("*".equals(tokenSymbol) || "/".equals(tokenSymbol) || "%".equals(tokenSymbol)){
             ICP = 2;
         }
         else if("+".equals(tokenSymbol) || "-".equals(tokenSymbol)){
@@ -103,7 +103,7 @@ public class PrecedenceParser {
     static int assignISP(TokenNode token){
         int ISP = 0;
         String tokenSymbol = token.getToken();
-        if("*".equals(tokenSymbol) || "/".equals(tokenSymbol)){
+        if("*".equals(tokenSymbol) || "/".equals(tokenSymbol) || "%".equals(tokenSymbol)){
             ISP = 2;
         }
         else if("+".equals(tokenSymbol) || "-".equals(tokenSymbol)){
