@@ -40,7 +40,7 @@ public class Checker {
 		return false;
 	}
 	
-	public boolean regexChecker(String input)
+	public static boolean regexChecker(String input)
 	{
 		String pattern = "(\\()*[\\+\\-]?(\\d+)(([\\*\\-\\+\\/\\%](\\()*([\\+\\-]?)\\d+)*(\\))*)*";
 		

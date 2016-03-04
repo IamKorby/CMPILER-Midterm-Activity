@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import model.TokenList;
 import model.TokenNode;
 import model.TokenType;
+import model.TokenizedInput;
 
 public class Lexer
 {
 	// FUNCTION  : parses input string into tokens and checks their token type
 	// PARAMETER : input string to be parsed
 	// RETURN    : arraylist of tokens with tokentypes
-	public ArrayList<TokenNode> parseInput(String input)
+	public static TokenizedInput parseInput(String input)
 	{
 		ArrayList<TokenNode> parsedInput = new ArrayList<>(0);
 		String num = "";
 		int currChar = 0;
+		boolean hasUnknown = false;
 		
 		// keep on reading character by character while currChar is not in the last character of the string
 		while( currChar != input.length() )
@@ -65,9 +67,12 @@ public class Lexer
 				// increment currChar afterwards to check the next character
 				parsedInput.add( new TokenNode(String.valueOf(input.charAt(currChar)), TokenType.UNKNOWN) );
 				currChar++;
+				
+				// this input has an unknown value, it fails the lexical analysis phase
+				hasUnknown = true;
 			}
 		}
 		
-		return parsedInput;
+		return new TokenizedInput( parsedInput, !hasUnknown);
 	}
 }

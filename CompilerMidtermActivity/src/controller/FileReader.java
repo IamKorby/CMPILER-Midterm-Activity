@@ -7,13 +7,12 @@ import java.util.Scanner;
 
 public class FileReader
 {
-	private Scanner scanner;
-	
 	// FUNCTION  : reads a file, removes spaces in data and puts data into an arraylist
 	// PARAMETER : directory of file / location of file
 	// RETURN    : returns the arraylist of the data
-	public ArrayList<String> read(String directory)
+	public static ArrayList<String> read(String directory)
 	{
+		Scanner scanner = null;
 		ArrayList<String> input = new ArrayList<>(0);
 		
 		// instantiate file reader for file
