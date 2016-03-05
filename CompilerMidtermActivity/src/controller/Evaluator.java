@@ -49,13 +49,20 @@ public class Evaluator
 						y /= x;
 					}catch( ArithmeticException ae )
 					{
-						input.setErrorType(ErrorType.DIVIDE_BY_ZERO_ERROR);
+						input.setErrorType(ErrorType.ARITHMETIC_EXCEPTION_DIVIDE_BY_ZERO_ERROR);
 						hasError = true;
 					}
 				}
 				else if( tokens.get(currentPosition).getToken() == "%" )
 				{
-					y %= x;
+					try
+					{
+						y %= x;
+					}catch( ArithmeticException ae )
+					{
+						input.setErrorType(ErrorType.ARITHMETIC_EXCEPTION_DIVIDE_BY_ZERO_ERROR);
+						hasError = true;
+					}
 				}
 				
 				stack.push(new TokenNode(Integer.toString(y), TokenType.OPERAND));
