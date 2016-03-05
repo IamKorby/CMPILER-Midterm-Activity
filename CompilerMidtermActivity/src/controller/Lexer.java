@@ -116,6 +116,18 @@ public class Lexer
 					newTokens.add(new TokenNode(tokens.get(i).getToken() + tokens.get(i+1).getToken(), TokenType.OPERAND));
 					i++;
 				}
+				// the token before the current token is open parenthesis
+				// and token after is operand
+				// and current token is + or -
+				else if(i + 1 < tokens.size() &&
+					   i - 1 > -1 &&
+					   tokens.get(i-1).getToken() == "(" &&
+					   tokens.get(i+1).getTokenType() == TokenType.OPERAND )
+				{
+					// combine the unary operator with the next operand and add to newTokens
+					newTokens.add(new TokenNode(tokens.get(i).getToken() + tokens.get(i+1).getToken(), TokenType.OPERAND));
+					i++;
+				}
 				else
 				{
 					// add token to newTokens
