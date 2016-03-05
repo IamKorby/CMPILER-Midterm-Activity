@@ -8,6 +8,7 @@ import controller.Checker;
 import controller.Evaluator;
 import controller.PrecedenceParser;
 import model.ErrorType;
+import model.TokenNode;
 import model.TokenizedInput;
 
 public class Main
@@ -33,22 +34,25 @@ public class Main
 		
 		// print tokenizedInputs[0]
 		System.out.println("\nLexical Checker:");
-		for( int i = 0; i < tokenizedInputs.size(); i++ )
+		for( TokenizedInput i : tokenizedInputs )
 		{
-//			for ( TokenNode n : i.getInfixTokens() )
-//			{
-//				System.out.println(n.getToken() + "\t" + n.getTokenType());
-//			}
-//			System.out.println();
-			if( tokenizedInputs.get(i).getErrorType() == ErrorType.LEXICAL_ERROR )
+			for ( TokenNode n : i.getInfixTokens() )
 			{
-				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
+				System.out.println(n.getToken() + "\t" + n.getTokenType());
 			}
-			else 
-			{
-				System.out.println(input.get(i) + " - ACCEPTED");
-			}
+			System.out.println();
 		}
+//		for( int i = 0; i < tokenizedInputs.size(); i++ )
+//		{
+//			if( tokenizedInputs.get(i).getErrorType() == ErrorType.LEXICAL_ERROR )
+//			{
+//				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
+//			}
+//			else 
+//			{
+//				System.out.println(input.get(i) + " - ACCEPTED");
+//			}
+//		}
 		
 		// TODO: check if tokenizedInput passed lexical analysis, if yes proceed, else skip
 		// check tokenizedInputs' syntax, sets the setPassedChecker()
