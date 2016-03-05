@@ -33,9 +33,13 @@ public class Main
 		}
 		
 		// print tokenizedInputs[0]
-		for ( TokenNode n : tokenizedInputs.get(0).getInfixTokens() )
+		for( TokenizedInput i : tokenizedInputs )
 		{
-			System.out.println(n.getToken() + "\t" + n.getTokenType());
+			for ( TokenNode n : i.getInfixTokens() )
+			{
+				System.out.println(n.getToken() + "\t" + n.getTokenType());
+			}
+			System.out.println();
 		}
 		
 		// TODO: check if tokenizedInput passed lexical analysis, if yes proceed, else skip
@@ -44,18 +48,22 @@ public class Main
 		System.out.println("\nRegex & Parenthesis Checker:");
 		for(int i = 0; i < tokenizedInputs.size(); i++)
 		{
-			// Using tokenizedInputs: where you use regexChecker by passing tokenizedInputs.get(i).getInfixTokens()
-			// Using original inputs: where you use parenthesisChecker by passing input.get(i)
-			
-			if( Checker.parenthesisChecker(input.get(i)) && Checker.regexChecker(tokenizedInputs.get(i).getInfixTokens()) )
+			// check if tokenizedInput passed the lexical analysis, if yes check syntax
+			if( tokenizedInputs.get(i).getErrorType() != ErrorType.LEXICAL_ERROR )
 			{
-				tokenizedInputs.get(i).setPassedChecker(true);
-				System.out.println(input.get(i) + " - ACCEPTED");
-			}
-			else
-			{
-				tokenizedInputs.get(i).setPassedChecker(false);
-				System.out.println(input.get(i) + " - SYNTAX ERROR");
+				// Using tokenizedInputs: where you use regexChecker by passing tokenizedInputs.get(i).getInfixTokens()
+				// Using original inputs: where you use parenthesisChecker by passing input.get(i)
+				
+				if( Checker.parenthesisChecker(input.get(i)) && Checker.regexChecker(tokenizedInputs.get(i).getInfixTokens()) )
+				{
+					tokenizedInputs.get(i).setPassedChecker(true);
+					System.out.println(input.get(i) + " - ACCEPTED");
+				}
+				else
+				{
+					tokenizedInputs.get(i).setPassedChecker(false);
+					System.out.println(input.get(i) + " - SYNTAX ERROR");
+				}
 			}
 		}
                 
@@ -64,11 +72,21 @@ public class Main
           System.out.println("\nConvert to postfix");
           for( TokenizedInput t : tokenizedInputs )
           {
-          	t.setPostfixTokens(PrecedenceParser.Convert2PostFix(t.getInfixTokens()));
+          	if( t.getErrorType() == ErrorType.NONE )
+          	{
+	          	t.setPostfixTokens(PrecedenceParser.Convert2PostFix(t.getInfixTokens()));
+	          	
+	          	for (int j = 0; j < t.getPostfixTokens().size(); j++)
+	     		{
+	     			System.out.print(t.getPostfixTokens().get(j).getToken() + " ");
+	     		}
+	     		System.out.println("");
+          	}
           }
           
           // check if tokenizedInput has passed syntax analysis
           // evaluate expression
+          System.out.println("\nEvaluate Values");
           for( TokenizedInput t : tokenizedInputs )
           {
           	if( t.getErrorType() == ErrorType.NONE )
@@ -80,6 +98,7 @@ public class Main
           // check if tokenizedInput has passed lexical analysis, if not display LEXICAL ERROR
           // check if tokenizedInput has passed syntax analysis, if not display SYNTAX ERROR
           // else print evaluated values
+          System.out.println("\nDisplay Values");
           for( TokenizedInput t : tokenizedInputs )
           {
           	if( t.getErrorType() != ErrorType.NONE )
