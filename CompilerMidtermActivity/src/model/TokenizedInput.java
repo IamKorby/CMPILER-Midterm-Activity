@@ -58,6 +58,11 @@ public class TokenizedInput
 		return errorType;
 	}
 	
+	public void setErrorType( ErrorType errorType )
+	{
+		this.errorType = errorType;
+	}
+	
 	public int getValue()
 	{
 		return value;

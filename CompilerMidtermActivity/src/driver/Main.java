@@ -91,7 +91,7 @@ public class Main
           {
           	if( t.getErrorType() == ErrorType.NONE )
           	{
-          		t.setValue(Evaluator.evaluate(t.getPostfixTokens()));
+          		Evaluator.evaluate(t);
           	}
           }
           
@@ -111,10 +111,13 @@ public class Main
           	}
           }
           
+//          System.out.println("MIN: " + Integer.MIN_VALUE);
+//          System.out.println("MAX: " + Integer.MAX_VALUE);
+          
 //		System.out.println("TRIAL");
 //		System.out.println(TokenList.containsNumber(Integer.toString(3)));
 //		System.out.println(TokenList.containsSymbol('-'));
-		
+//		
 //		String x = "+";
 //		
 //		System.out.println(TokenList.containsSymbol(x));

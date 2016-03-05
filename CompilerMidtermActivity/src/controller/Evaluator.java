@@ -3,46 +3,57 @@ package controller;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import model.ErrorType;
 import model.TokenNode;
 import model.TokenType;
+import model.TokenizedInput;
 
 public class Evaluator
 {
-	public static int evaluate(ArrayList<TokenNode> input)
+	public static void evaluate(TokenizedInput input)
 	{
+		ArrayList<TokenNode> tokens = input.getPostfixTokens();
 		Stack<TokenNode> stack = new Stack<TokenNode>();
 		int currentPosition = 0;
+		boolean hasError = false;
 		
 		//3 5 + 2 * 6 3 - +
 		
-		while( currentPosition < input.size() )
+		while( currentPosition < tokens.size() )
 		{
-			if( input.get(currentPosition).getTokenType() == TokenType.OPERAND )
+			if( tokens.get(currentPosition).getTokenType() == TokenType.OPERAND )
 			{
-				stack.push(input.get(currentPosition));
+				stack.push(tokens.get(currentPosition));
 			}
-			else if( input.get(currentPosition).getTokenType() == TokenType.OPERATOR )
+			else if( tokens.get(currentPosition).getTokenType() == TokenType.OPERATOR )
 			{
 				int x = Integer.parseInt(stack.pop().getToken());
 				int y = Integer.parseInt(stack.pop().getToken());
 				
-				if( input.get(currentPosition).getToken() == "+" )
+				if( tokens.get(currentPosition).getToken() == "+" )
 				{
 					y += x;
 				}
-				else if( input.get(currentPosition).getToken() == "-" )
+				else if( tokens.get(currentPosition).getToken() == "-" )
 				{
 					y -= x;
 				}
-				else if( input.get(currentPosition).getToken() == "*" )
+				else if( tokens.get(currentPosition).getToken() == "*" )
 				{
 					y *= x;
 				}
-				else if( input.get(currentPosition).getToken() == "/" )
+				else if( tokens.get(currentPosition).getToken() == "/" )
 				{
-					y /= x;
+					try
+					{
+						y /= x;
+					}catch( ArithmeticException ae )
+					{
+						input.setErrorType(ErrorType.DIVIDE_BY_ZERO_ERROR);
+						hasError = true;
+					}
 				}
-				else if( input.get(currentPosition).getToken() == "%" )
+				else if( tokens.get(currentPosition).getToken() == "%" )
 				{
 					y %= x;
 				}
@@ -53,6 +64,9 @@ public class Evaluator
 			currentPosition++;
 		}
 		
-		return Integer.parseInt(stack.pop().getToken());
+		if( !hasError )
+		{
+			input.setValue(Integer.parseInt(stack.pop().getToken()));
+		}
 	}
 }
