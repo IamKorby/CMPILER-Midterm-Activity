@@ -16,7 +16,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		ArrayList<TokenizedInput> tokenizedInputs = new ArrayList<TokenizedInput>(0);
-		ArrayList<String> input = FileReader.read("src/input.txt");
+		ArrayList<String> input = FileReader.read("input.txt");
 		
 		// print original inputs
 		for ( String s : input )
