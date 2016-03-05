@@ -65,17 +65,15 @@ public class PrecedenceParser
 					}
 					else if (ISP >= ICP)
 					{
-						while (ISP >= ICP)
+						while (ISP >= ICP && !stack.empty())
 						{
+                                                    postFix.add(stack.pop());
 							if (!stack.empty())
 							{
-								postFix.add(stack.pop());
-								if (!stack.empty())
-								{
-									top = stack.peek();
-									ISP = assignISP(top);
-								}
+								top = stack.peek();
+								ISP = assignISP(top);
 							}
+							
 						}
 						stack.push(currentToken);
 					}
