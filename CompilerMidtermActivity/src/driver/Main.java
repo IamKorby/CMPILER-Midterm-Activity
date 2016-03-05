@@ -8,7 +8,6 @@ import controller.Checker;
 import controller.Evaluator;
 import controller.PrecedenceParser;
 import model.ErrorType;
-import model.TokenNode;
 import model.TokenizedInput;
 
 public class Main
@@ -33,13 +32,22 @@ public class Main
 		}
 		
 		// print tokenizedInputs[0]
-		for( TokenizedInput i : tokenizedInputs )
+		System.out.println("\nLexical Checker:");
+		for( int i = 0; i < tokenizedInputs.size(); i++ )
 		{
-			for ( TokenNode n : i.getInfixTokens() )
+//			for ( TokenNode n : i.getInfixTokens() )
+//			{
+//				System.out.println(n.getToken() + "\t" + n.getTokenType());
+//			}
+//			System.out.println();
+			if( tokenizedInputs.get(i).getErrorType() == ErrorType.LEXICAL_ERROR )
 			{
-				System.out.println(n.getToken() + "\t" + n.getTokenType());
+				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
 			}
-			System.out.println();
+			else 
+			{
+				System.out.println(input.get(i) + " - ACCEPTED");
+			}
 		}
 		
 		// TODO: check if tokenizedInput passed lexical analysis, if yes proceed, else skip
@@ -62,8 +70,12 @@ public class Main
 				else
 				{
 					tokenizedInputs.get(i).setPassedChecker(false);
-					System.out.println(input.get(i) + " - SYNTAX ERROR");
+					System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
 				}
+			}
+			else
+			{
+				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString() + " -> Not Checked for Syntax");
 			}
 		}
                 
@@ -81,6 +93,10 @@ public class Main
 	     			System.out.print(t.getPostfixTokens().get(j).getToken() + " ");
 	     		}
 	     		System.out.println("");
+          	}
+          	else
+          	{
+          		System.out.println(t.getErrorType().toString());
           	}
           }
           
