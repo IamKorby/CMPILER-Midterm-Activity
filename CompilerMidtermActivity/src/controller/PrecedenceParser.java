@@ -67,20 +67,19 @@ public class PrecedenceParser
 					{
 						while (ISP >= ICP)
 						{
-                                                        if(!stack.empty()){
-                                                            postFix.add(stack.pop());
-                                                            if(!stack.empty()){
-                                                                top = stack.peek();
-                                                                ISP = assignISP(top);
-                                                            }
-                                                            
-                                                        }
-							
+							if (!stack.empty())
+							{
+								postFix.add(stack.pop());
+								if (!stack.empty())
+								{
+									top = stack.peek();
+									ISP = assignISP(top);
+								}
+							}
 						}
 						stack.push(currentToken);
 					}
 				}
-
 			}
 		}
 		if (!stack.empty())
@@ -96,12 +95,6 @@ public class PrecedenceParser
 
 			}
 		}
-
-//		for (int i = 0; i < postFix.size(); i++)
-//		{
-//			System.out.print(postFix.get(i).getToken() + " ");
-//		}
-//		System.out.println("");
 
 		return postFix;
 	}
