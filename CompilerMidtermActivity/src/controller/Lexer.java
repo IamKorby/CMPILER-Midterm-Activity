@@ -87,6 +87,7 @@ public class Lexer
 			{
 				// first symbol in token list is + or -
 				if( i == 0 && 
+				    i + 1 < tokens.size() &&
 				    (tokens.get(i).getToken() == "+" || tokens.get(i).getToken() == "-" ) )
 				{
 					// combine the unary operator with the next operand and add to newTokens
@@ -96,7 +97,8 @@ public class Lexer
 				// the token before the current token is an operator 
 				// and the token after the current token is an operand
 				// and current token is + or -
-				else if( tokens.get(i-1).getTokenType() == TokenType.OPERATOR &&
+				else if( i + 1 < tokens.size() &&
+					    tokens.get(i-1).getTokenType() == TokenType.OPERATOR &&
 					    tokens.get(i+1).getTokenType() == TokenType.OPERAND &&
 					    (tokens.get(i).getToken() == "+" || tokens.get(i).getToken() == "-" ) )
 				{
