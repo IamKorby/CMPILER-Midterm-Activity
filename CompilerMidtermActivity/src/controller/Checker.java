@@ -61,10 +61,13 @@ public class Checker
 	// Checks if the input Token Type conforms to the syntax
 	private static boolean regexChecker(ArrayList<TokenNode> inputTokenNode)
 	{
-		//OLD REGEX
+		//OLD REGEX aka NO OPERATOR_UNARY
 //		String pattern = "(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
 		//NEW REGEX aka with OPERATOR_UNARY
-		String pattern = "(GROUPING_SYMBOL)*(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*)*(OPERAND))+(GROUPING_SYMBOL)*";
+//		String pattern = "(GROUPING_SYMBOL)*(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*)*(OPERAND))+(GROUPING_SYMBOL)*";
+//		String pattern = "(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+//		String pattern = "(OPERATOR_UNARY)?(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+		String pattern = "(GROUPING_SYMBOL)*(OPERATOR_UNARY)?(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
 		String inputTokenType = "";
 		
 		for(int i = 0; i < inputTokenNode.size(); i++)
