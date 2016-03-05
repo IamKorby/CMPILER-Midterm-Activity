@@ -42,13 +42,15 @@ public class PrecedenceParser
 				else if (")".equals(token))
 				{
 					TokenNode stackToken = stack.pop();
-					if (stackToken.getTokenType() == TokenType.OPERATOR)
+					if ( stackToken.getTokenType() == TokenType.OPERATOR ||
+					     stackToken.getTokenType() == TokenType.OPERATOR_UNARY )
 					{
 						postFix.add(stackToken);
 					}
 				}
 			}
-			else if (currentToken.getTokenType() == TokenType.OPERATOR)
+			else if ( currentToken.getTokenType() == TokenType.OPERATOR ||
+					currentToken.getTokenType() == TokenType.OPERATOR_UNARY )
 			{
 				ICP = assignICP(currentToken);
 				if (stack.empty())
