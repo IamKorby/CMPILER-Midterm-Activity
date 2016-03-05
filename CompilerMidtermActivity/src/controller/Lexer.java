@@ -73,7 +73,7 @@ public class Lexer
 			}
 		}
 		
-		return new TokenizedInput( processUnary(parsedInput), !hasUnknown);
+		return new TokenizedInput( input, processUnary(parsedInput), !hasUnknown);
 	}
 	
 	private static ArrayList<TokenNode> processUnary( ArrayList<TokenNode> tokens )

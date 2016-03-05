@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class TokenizedInput
 {
+	private String originalInput;
 	private ArrayList<TokenNode> infixTokens;
 	private ArrayList<TokenNode> postfixTokens;
 	private boolean hasPassedLexer;
@@ -11,8 +12,9 @@ public class TokenizedInput
 	private ErrorType errorType;
 	private int value;
 	
-	public TokenizedInput( ArrayList<TokenNode> infixTokens, boolean hasPassedLexer )
+	public TokenizedInput( String originalInput, ArrayList<TokenNode> infixTokens, boolean hasPassedLexer )
 	{
+		this.originalInput = originalInput;
 		this.infixTokens = infixTokens;
 		this.hasPassedLexer = hasPassedLexer;
 		
@@ -22,6 +24,11 @@ public class TokenizedInput
 			this.errorType = ErrorType.LEXICAL_ERROR;
 			hasPassedChecker = false;
 		}
+	}
+	
+	public String getOriginalInput()
+	{
+		return originalInput;
 	}
 	
 	public ArrayList<TokenNode> getInfixTokens()
