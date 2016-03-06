@@ -7,11 +7,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import model.TokenNode;
+import model.TokenizedInput;
 
-public class Checker {
+public class Checker 
+{
+	public static void checkSyntax( TokenizedInput input )
+	{
+		// Using original inputs: where you use parenthesisChecker by passing input.getOriginalInput()
+		// Using tokenizedInputs: where you use regexChecker by passing input.getInfixTokens()
+		if( parenthesisChecker(input.getOriginalInput()) && regexChecker(input.getInfixTokens()) )
+		{
+			input.setPassedChecker(true);
+		}
+		else
+		{
+			input.setPassedChecker(false);
+		}
+	}
 	
 	// Count if the num of '(' == num of ')' using stacks
-	public static boolean parenthesisChecker(String input)
+	private static boolean parenthesisChecker(String input)
 	{
 		Stack<Character> stack = new Stack<Character>();
 		try
@@ -44,9 +59,15 @@ public class Checker {
 	}
 	
 	// Checks if the input Token Type conforms to the syntax
-	public static boolean regexChecker(ArrayList<TokenNode> inputTokenNode)
+	private static boolean regexChecker(ArrayList<TokenNode> inputTokenNode)
 	{
-		String pattern = "(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+		//OLD REGEX aka NO OPERATOR_UNARY
+//		String pattern = "(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+		//NEW REGEX aka with OPERATOR_UNARY
+//		String pattern = "(GROUPING_SYMBOL)*(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*)*(OPERAND))+(GROUPING_SYMBOL)*";
+//		String pattern = "(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+//		String pattern = "(OPERATOR_UNARY)?(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
+		String pattern = "(GROUPING_SYMBOL)*(OPERATOR_UNARY)?(GROUPING_SYMBOL)*(OPERAND)(((OPERATOR_UNARY|OPERATOR)(GROUPING_SYMBOL)*(OPERAND))*(GROUPING_SYMBOL)*)*";
 		String inputTokenType = "";
 		
 		for(int i = 0; i < inputTokenNode.size(); i++)

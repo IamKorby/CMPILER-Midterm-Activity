@@ -28,7 +28,15 @@ public class Lexer
 				// create a new TokenNode object containing the string value of the character and the tokentype operator
 				// add the tokenNode object to the parsedInput arraylist
 				// increment currChar afterwards to check the next character
-				parsedInput.add( new TokenNode(charToString(input.charAt(currChar)), TokenType.OPERATOR) );
+				
+				if( input.charAt(currChar) == '+' || input.charAt(currChar) == '-' )
+				{
+					parsedInput.add( new TokenNode(charToString(input.charAt(currChar)), TokenType.OPERATOR_UNARY) );
+				}
+				else
+				{
+					parsedInput.add( new TokenNode(charToString(input.charAt(currChar)), TokenType.OPERATOR) );
+				}
 				currChar++;
 			}
 			// check if character is a grouping symbol
@@ -73,7 +81,7 @@ public class Lexer
 			}
 		}
 		
-		return new TokenizedInput( processUnary(parsedInput), !hasUnknown);
+		return new TokenizedInput( input, processUnary(parsedInput), !hasUnknown);
 	}
 	
 	private static ArrayList<TokenNode> processUnary( ArrayList<TokenNode> tokens )
@@ -83,27 +91,38 @@ public class Lexer
 		for( int i = 0; i < tokens.size(); i++ )
 		{
 			// check possibility of unary only if token is an operator
-			if( tokens.get(i).getTokenType() == TokenType.OPERATOR )
+			if( tokens.get(i).getTokenType() == TokenType.OPERATOR_UNARY )
 			{
 				// first symbol in token list is + or -
 				// token after current token is operand
 				if( i == 0 && 
 				    i + 1 < tokens.size() &&
-				    tokens.get(i+1).getTokenType() == TokenType.OPERAND &&
-				    (tokens.get(i).getToken() == "+" || tokens.get(i).getToken() == "-" ) )
+				    tokens.get(i+1).getTokenType() == TokenType.OPERAND )
 				{
 					// combine the unary operator with the next operand and add to newTokens
 					newTokens.add(new TokenNode(tokens.get(i).getToken() + tokens.get(i+1).getToken(), TokenType.OPERAND));
 					i++;
 				}
-				// the token before the current token is an operator 
+				// the token before the current token is an operator or operator_unary 
 				// and the token after the current token is an operand
 				// and current token is + or -
 				else if( i + 1 < tokens.size() &&
 					    i - 1 > -1 &&
-					    tokens.get(i-1).getTokenType() == TokenType.OPERATOR &&
-					    tokens.get(i+1).getTokenType() == TokenType.OPERAND &&
-					    (tokens.get(i).getToken() == "+" || tokens.get(i).getToken() == "-" ) )
+					    (tokens.get(i-1).getTokenType() == TokenType.OPERATOR ||
+					    tokens.get(i-1).getTokenType() == TokenType.OPERATOR_UNARY ) &&
+					    tokens.get(i+1).getTokenType() == TokenType.OPERAND )
+				{
+					// combine the unary operator with the next operand and add to newTokens
+					newTokens.add(new TokenNode(tokens.get(i).getToken() + tokens.get(i+1).getToken(), TokenType.OPERAND));
+					i++;
+				}
+				// the token before the current token is open parenthesis
+				// and token after is operand
+				// and current token is + or -
+				else if(i + 1 < tokens.size() &&
+					   i - 1 > -1 &&
+					   tokens.get(i-1).getToken() == "(" &&
+					   tokens.get(i+1).getTokenType() == TokenType.OPERAND )
 				{
 					// combine the unary operator with the next operand and add to newTokens
 					newTokens.add(new TokenNode(tokens.get(i).getToken() + tokens.get(i+1).getToken(), TokenType.OPERAND));

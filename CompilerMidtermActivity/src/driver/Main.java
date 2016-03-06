@@ -8,6 +8,7 @@ import controller.Checker;
 import controller.Evaluator;
 import controller.PrecedenceParser;
 import model.ErrorType;
+import model.TokenNode;
 import model.TokenizedInput;
 
 public class Main
@@ -31,56 +32,57 @@ public class Main
 			tokenizedInputs.add(Lexer.parseInput(s));
 		}
 		
-		// print tokenizedInputs[0]
+		// print tokenizedInputs
 		System.out.println("\nLexical Checker:");
-		for( int i = 0; i < tokenizedInputs.size(); i++ )
+		for( TokenizedInput i : tokenizedInputs )
 		{
-//			for ( TokenNode n : i.getInfixTokens() )
-//			{
-//				System.out.println(n.getToken() + "\t" + n.getTokenType());
-//			}
-//			System.out.println();
-			if( tokenizedInputs.get(i).getErrorType() == ErrorType.LEXICAL_ERROR )
+			for ( TokenNode n : i.getInfixTokens() )
 			{
-				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
+				System.out.println(n.getToken() + "\t" + n.getTokenType());
 			}
-			else 
-			{
-				System.out.println(input.get(i) + " - ACCEPTED");
-			}
+			System.out.println();
 		}
 		
-		// TODO: check if tokenizedInput passed lexical analysis, if yes proceed, else skip
-		// check tokenizedInputs' syntax, sets the setPassedChecker()
+		// print lexical analysis results
+//		for( int i = 0; i < tokenizedInputs.size(); i++ )
+//		{
+//			if( tokenizedInputs.get(i).getErrorType() == ErrorType.LEXICAL_ERROR )
+//			{
+//				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
+//			}
+//			else 
+//			{
+//				System.out.println(input.get(i) + " - ACCEPTED");
+//			}
+//		}
+		
+		// check if tokenizedInput passed lexical analysis, if yes proceed, else skip
+		// check tokenizedInputs' syntax
 		// print result
 		System.out.println("\nRegex & Parenthesis Checker:");
-		for(int i = 0; i < tokenizedInputs.size(); i++)
+		for( TokenizedInput t : tokenizedInputs )
 		{
 			// check if tokenizedInput passed the lexical analysis, if yes check syntax
-			if( tokenizedInputs.get(i).getErrorType() != ErrorType.LEXICAL_ERROR )
+			if( t.getErrorType() != ErrorType.LEXICAL_ERROR )
 			{
-				// Using tokenizedInputs: where you use regexChecker by passing tokenizedInputs.get(i).getInfixTokens()
-				// Using original inputs: where you use parenthesisChecker by passing input.get(i)
+				Checker.checkSyntax(t);
 				
-				if( Checker.parenthesisChecker(input.get(i)) && Checker.regexChecker(tokenizedInputs.get(i).getInfixTokens()) )
+				if( t.getErrorType() == ErrorType.NONE )
 				{
-					tokenizedInputs.get(i).setPassedChecker(true);
-					System.out.println(input.get(i) + " - ACCEPTED");
+					System.out.println(t.getOriginalInput() + " - ACCEPTED");
 				}
 				else
 				{
-					tokenizedInputs.get(i).setPassedChecker(false);
-					System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString());
+					System.out.println(t.getOriginalInput() + " - " + t.getErrorType().toString());
 				}
 			}
 			else
 			{
-				System.out.println(input.get(i) + " - " + tokenizedInputs.get(i).getErrorType().toString() + " -> Not Checked for Syntax");
+				System.out.println(t.getOriginalInput() + " - " + t.getErrorType().toString() + " -> Not Checked for Syntax");
 			}
 		}
                 
 		// convert infix tokens to postfix tokens
-		// TODO: Debug, has EmptyStackException Error
           System.out.println("\nConvert to postfix");
           for( TokenizedInput t : tokenizedInputs )
           {
@@ -127,6 +129,7 @@ public class Main
           	}
           }
           
+          System.out.println("-- END OF PROGRAM --");
 //          System.out.println("MIN: " + Integer.MIN_VALUE);
 //          System.out.println("MAX: " + Integer.MAX_VALUE);
           
