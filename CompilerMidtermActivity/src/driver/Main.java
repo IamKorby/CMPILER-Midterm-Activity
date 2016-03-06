@@ -129,6 +129,7 @@ public class Main
           	}
           }
           
+          System.out.println("-- END OF PROGRAM --");
 //          System.out.println("MIN: " + Integer.MIN_VALUE);
 //          System.out.println("MAX: " + Integer.MAX_VALUE);
           

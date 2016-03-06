@@ -91,8 +91,11 @@ public class PrecedenceParser
 				{
 					stack.pop();
 				}
-				postFix.add(stack.pop());
-
+				
+				if( !stack.empty() )
+				{
+					postFix.add(stack.pop());
+				}
 			}
 		}
 

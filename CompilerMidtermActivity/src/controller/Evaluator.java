@@ -28,8 +28,17 @@ public class Evaluator
 			else if( tokens.get(currentPosition).getTokenType() == TokenType.OPERATOR ||
 				    tokens.get(currentPosition).getTokenType() == TokenType.OPERATOR_UNARY )
 			{
-				int x = Integer.parseInt(stack.pop().getToken());
-				int y = Integer.parseInt(stack.pop().getToken());
+				int x = 0, y = 0;
+				
+				if( !stack.empty() )
+				{
+					x = Integer.parseInt(stack.pop().getToken());
+				}
+				
+				if( !stack.empty() )
+				{
+					y = Integer.parseInt(stack.pop().getToken());
+				}
 				
 				if( tokens.get(currentPosition).getToken() == "+" )
 				{
