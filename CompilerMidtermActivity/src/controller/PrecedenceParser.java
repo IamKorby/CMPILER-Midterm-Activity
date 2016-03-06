@@ -1,14 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Algorithm based from: www.sunshine2k.de/coding/java/SimpleParser/SimpleParser.html
  */
 package controller;
 
 import java.util.ArrayList;
 import java.util.Stack;
+
+import model.ErrorType;
 import model.TokenNode;
 import model.TokenType;
+import model.TokenizedInput;
 
 /**
  *
@@ -16,90 +17,94 @@ import model.TokenType;
  */
 public class PrecedenceParser
 {
-	public static ArrayList<TokenNode> Convert2PostFix(ArrayList<TokenNode> list)
+	public static void ConvertToPostFix(TokenizedInput input)
 	{
-		ArrayList<TokenNode> postFix = new ArrayList<>();
-		Stack<TokenNode> stack = new Stack<>();
-		TokenNode currentToken;
-		TokenNode stackTop;
-		int ISP; // In stack priority
-		int ICP; // Incoming priority
-
-		for (TokenNode list1 : list)
+		if ( input.getErrorType() == ErrorType.NONE )
 		{
-			currentToken = list1;
-			if (currentToken.getTokenType() == TokenType.OPERAND)
+			ArrayList<TokenNode> inFix = input.getInfixTokens();
+			ArrayList<TokenNode> postFix = new ArrayList<>();
+			Stack<TokenNode> stack = new Stack<>();
+			TokenNode currentToken;
+			TokenNode stackTop;
+			int ISP; // In stack priority
+			int ICP; // Incoming priority
+	
+			for (TokenNode list1 : inFix)
 			{
-				postFix.add(currentToken);
-			}
-			else if (currentToken.getTokenType() == TokenType.GROUPING_SYMBOL)
-			{
-				String token = currentToken.getToken();
-				if ("(".equals(token))
+				currentToken = list1;
+				if (currentToken.getTokenType() == TokenType.OPERAND)
 				{
-					stack.push(currentToken);
+					postFix.add(currentToken);
 				}
-				else if (")".equals(token))
+				else if (currentToken.getTokenType() == TokenType.GROUPING_SYMBOL)
 				{
-					TokenNode stackToken = stack.pop();
-					if ( stackToken.getTokenType() == TokenType.OPERATOR ||
-					     stackToken.getTokenType() == TokenType.OPERATOR_UNARY )
-					{
-						postFix.add(stackToken);
-					}
-				}
-			}
-			else if ( currentToken.getTokenType() == TokenType.OPERATOR ||
-					currentToken.getTokenType() == TokenType.OPERATOR_UNARY )
-			{
-				ICP = assignICP(currentToken);
-				if (stack.empty())
-				{
-					stack.push(currentToken);
-				}
-				else
-				{
-					TokenNode top = stack.peek();
-					ISP = assignISP(top);
-					if (ISP < ICP)
+					String token = currentToken.getToken();
+					if ("(".equals(token))
 					{
 						stack.push(currentToken);
 					}
-					else if (ISP >= ICP)
+					else if (")".equals(token))
 					{
-						while (ISP >= ICP && !stack.empty())
+						TokenNode stackToken = stack.pop();
+						if ( stackToken.getTokenType() == TokenType.OPERATOR ||
+						     stackToken.getTokenType() == TokenType.OPERATOR_UNARY )
 						{
-                                                    postFix.add(stack.pop());
-							if (!stack.empty())
-							{
-								top = stack.peek();
-								ISP = assignISP(top);
-							}
-							
+							postFix.add(stackToken);
 						}
+					}
+				}
+				else if ( currentToken.getTokenType() == TokenType.OPERATOR ||
+						currentToken.getTokenType() == TokenType.OPERATOR_UNARY )
+				{
+					ICP = assignICP(currentToken);
+					if (stack.empty())
+					{
 						stack.push(currentToken);
+					}
+					else
+					{
+						TokenNode top = stack.peek();
+						ISP = assignISP(top);
+						if (ISP < ICP)
+						{
+							stack.push(currentToken);
+						}
+						else if (ISP >= ICP)
+						{
+							while (ISP >= ICP && !stack.empty())
+							{
+	                                                    postFix.add(stack.pop());
+								if (!stack.empty())
+								{
+									top = stack.peek();
+									ISP = assignISP(top);
+								}
+								
+							}
+							stack.push(currentToken);
+						}
 					}
 				}
 			}
-		}
-		if (!stack.empty())
-		{
-			while (!stack.empty())
+			if (!stack.empty())
 			{
-				stackTop = stack.peek();
-				if ("(".equals(stackTop.getToken()))
+				while (!stack.empty())
 				{
-					stack.pop();
-				}
-				
-				if( !stack.empty() )
-				{
-					postFix.add(stack.pop());
+					stackTop = stack.peek();
+					if ("(".equals(stackTop.getToken()))
+					{
+						stack.pop();
+					}
+					
+					if( !stack.empty() )
+					{
+						postFix.add(stack.pop());
+					}
 				}
 			}
+	
+			input.setPostfixTokens(postFix);
 		}
-
-		return postFix;
 	}
 
 	static int assignICP(TokenNode token)

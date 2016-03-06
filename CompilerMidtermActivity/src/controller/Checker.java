@@ -6,6 +6,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import model.ErrorType;
 import model.TokenNode;
 import model.TokenizedInput;
 
@@ -13,15 +14,19 @@ public class Checker
 {
 	public static void checkSyntax( TokenizedInput input )
 	{
-		// Using original inputs: where you use parenthesisChecker by passing input.getOriginalInput()
-		// Using tokenizedInputs: where you use regexChecker by passing input.getInfixTokens()
-		if( parenthesisChecker(input.getOriginalInput()) && regexChecker(input.getInfixTokens()) )
+		// check if tokenizedInput passed the lexical analysis, if yes check syntax
+		if( input.getErrorType() != ErrorType.LEXICAL_ERROR )
 		{
-			input.setPassedChecker(true);
-		}
-		else
-		{
-			input.setPassedChecker(false);
+			// Using original inputs: where you use parenthesisChecker by passing input.getOriginalInput()
+			// Using tokenizedInputs: where you use regexChecker by passing input.getInfixTokens()
+			if( parenthesisChecker(input.getOriginalInput()) && regexChecker(input.getInfixTokens()) )
+			{
+				input.setPassedChecker(true);
+			}
+			else
+			{
+				input.setPassedChecker(false);
+			}
 		}
 	}
 	
